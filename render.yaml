@@ -10,7 +10,7 @@ services:
     name: concord-api
     runtime: node
     plan: free
-    buildCommand: npm ci && npm run build --workspace=packages/schema && npm run build --workspace=packages/core && npm run build --workspace=apps/api
+    buildCommand: npm install && npm run build:api
     startCommand: npm run start --workspace=apps/api
     envVars:
       - key: NODE_ENV

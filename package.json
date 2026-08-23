@@ -13,6 +13,8 @@
     "dev:web": "npm run dev --workspace=apps/web",
     "dev": "npm run dev:api & npm run dev:web",
     "build": "npm run build --workspaces --if-present",
+    "build:api": "npm run build --workspace=packages/schema && npm run build --workspace=packages/core && npm run build --workspace=apps/api",
+    "build:web": "npm run build --workspace=packages/schema && npm run build --workspace=packages/core && npm run build --workspace=apps/web",
     "test": "npm run test --workspaces --if-present",
     "eval": "npm run eval --workspace=eval",
     "db:migrate": "npm run db:migrate --workspace=apps/api",

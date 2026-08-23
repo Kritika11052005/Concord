@@ -104,10 +104,10 @@ export function validateConstraintSet(
 
   // 6. Conflicting hard constraints
   const hardPriceMax = constraints.find(
-    (c) => c.kind === 'price_max' && c.hardness === 'hard' && c.value.type === 'money'
+    (c: Constraint) => c.kind === 'price_max' && c.hardness === 'hard' && c.value.type === 'money'
   );
   const hardPriceMin = constraints.find(
-    (c) => c.kind === 'price_min' && c.hardness === 'hard' && c.value.type === 'money'
+    (c: Constraint) => c.kind === 'price_min' && c.hardness === 'hard' && c.value.type === 'money'
   );
 
   if (
