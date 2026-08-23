@@ -19,9 +19,9 @@ services:
         fromDatabase:
           name: concord-db
           property: connectionString
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: ANTHROPIC_API_KEY
+      - key: LLM_PROVIDER
+        value: google-gemini
+      - key: LLM_API_KEY
         sync: false
       - key: CONCORD_DEFAULT_STRICTNESS
         value: "0.75"

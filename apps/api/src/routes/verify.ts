@@ -127,7 +127,7 @@ verifyRouter.post('/', async (req: Request, res: Response): Promise<void> => {
     pool.query(
       `UPDATE extraction_cache SET hit_count = hit_count + 1, last_hit_at = now() WHERE intent_hash = $1 AND extractor_version = $2 AND prompt_version = $3`,
       [intentHash, EXTRACTOR_VERSION, PROMPT_VERSION]
-    ).catch(() => {});
+    ).catch(() => { });
   } else {
     constraintSet = await llmProvider.extractConstraints(intent_text);
     // Cache write
@@ -136,7 +136,7 @@ verifyRouter.post('/', async (req: Request, res: Response): Promise<void> => {
        VALUES ($1, $2, $3, $4, $5, 1)
        ON CONFLICT (intent_hash, extractor_version, prompt_version) DO NOTHING`,
       [intentHash, EXTRACTOR_VERSION, PROMPT_VERSION, JSON.stringify(constraintSet), constraintSet.extraction_confidence]
-    ).catch(() => {});
+    ).catch(() => { });
   }
 
   const extractDuration = Date.now() - extractStart;

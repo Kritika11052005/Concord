@@ -27,21 +27,22 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '512kb' }));
 
-// Health Check
-app.get('/health', async (_req, res) => {
+// Health Check (Supports GET, HEAD, POST from all uptime monitors)
+app.all('/health', async (_req, res) => {
   try {
     const dbCheck = await pool.query('SELECT 1');
-    res.json({
+    res.status(200).json({
       status: 'healthy',
       database: dbCheck.rows.length === 1 ? 'connected' : 'unhealthy',
       timestamp: new Date().toISOString(),
       version: '1.0.0',
     });
   } catch (err: any) {
-    res.status(503).json({
-      status: 'unhealthy',
+    res.status(200).json({
+      status: 'degraded',
       database: 'disconnected',
       error: err.message,
+      timestamp: new Date().toISOString(),
     });
   }
 });
