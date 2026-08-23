@@ -23,5 +23,7 @@ services:
         value: google-gemini
       - key: LLM_API_KEY
         sync: false
+      - key: SCALAR_AGENT_KEY
+        sync: false
       - key: CONCORD_DEFAULT_STRICTNESS
         value: "0.75"

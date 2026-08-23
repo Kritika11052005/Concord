@@ -279,23 +279,24 @@ app.get('/docs', (_req, res) => {
         <script
           id="api-reference"
           data-url="/v1/openapi.json"
-          data-configuration='{
-            "theme": "kepler",
-            "darkMode": true,
-            "hideModels": false,
-            "showSidebar": true,
-            "searchHotKey": "k",
-            "layout": "modern",
-            "defaultHttpClient": {
-              "targetKey": "shell",
-              "clientKey": "curl"
+          data-configuration='${JSON.stringify({
+            theme: 'kepler',
+            darkMode: true,
+            hideModels: false,
+            showSidebar: true,
+            searchHotKey: 'k',
+            layout: 'modern',
+            ...(process.env.SCALAR_AGENT_KEY ? { agent: { key: process.env.SCALAR_AGENT_KEY } } : {}),
+            defaultHttpClient: {
+              targetKey: 'shell',
+              clientKey: 'curl',
             },
-            "hiddenClients": {
-              "python": ["http.client"],
-              "js": ["xhr", "jquery"],
-              "node": ["undici"]
-            }
-          }'
+            hiddenClients: {
+              python: ['http.client'],
+              js: ['xhr', 'jquery'],
+              node: ['undici'],
+            },
+          })}'
         ></script>
         <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
 
