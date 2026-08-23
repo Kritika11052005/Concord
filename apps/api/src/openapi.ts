@@ -53,6 +53,10 @@ Authorization: Bearer ck_live_a8f93bc102...
   },
   servers: [
     {
+      url: 'https://concord-mh6j.onrender.com',
+      description: 'Live Production Gateway (Render)',
+    },
+    {
       url: 'http://localhost:3001',
       description: 'Local Development Gateway',
     },

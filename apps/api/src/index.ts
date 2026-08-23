@@ -13,6 +13,7 @@ import { consoleRouter } from './routes/console.js';
 import { keysRouter } from './routes/keys.js';
 import { metricsRouter } from './routes/metrics.js';
 import { pool } from './db/index.js';
+import { runMigration } from './db/migrate.js';
 import { openApiSpec } from './openapi.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -343,7 +344,12 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`✓ Concord API running on http://localhost:${PORT}`);
   console.log(`✓ Interactive docs available at http://localhost:${PORT}/docs`);
+  try {
+    await runMigration();
+  } catch (err: any) {
+    console.error('Migration warning (continuing):', err.message);
+  }
 });
