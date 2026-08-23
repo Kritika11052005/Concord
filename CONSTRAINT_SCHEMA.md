@@ -14,10 +14,10 @@
 
 ```mermaid
 flowchart LR
-    Intent["🔤 Natural Language Intent<br/><i>'espresso machine &lt; ₹15,000'</i>"] -->|extract() + Validator| Constraints["📦 ConstraintSet<br/>• Typed Closed Set<br/>• Character source_spans"]
+    Intent["🔤 Natural Language Intent<br/><i>'espresso machine &lt; ₹15,000'</i>"] -->|"extract() + validate()"| Constraints["📦 ConstraintSet<br/>• Typed Closed Set<br/>• Character source_spans"]
     
-    Cart["🛒 Structured Cart<br/>• SKU, Price, Date<br/>• Brand, Category"] --> Evaluate
-    Constraints --> Evaluate
+    Cart["🛒 Structured Cart<br/>• SKU, Price, Date<br/>• Brand, Category"] --> L1 & L2
+    Constraints --> L1 & L2
     
     subgraph Evaluation["⚙️ Hybrid Verification Pipeline"]
         direction TB
@@ -25,15 +25,10 @@ flowchart LR
         L2["🧠 Layer 2: Semantic (Platt Scaled)<br/>Category fit, Attribute conformance"]
     end
     
-    Evaluate --> L1 & L2
     L1 & L2 --> Results["📋 CheckResult[]<br/>Observed vs Expected Evidence"]
     
     Results --> Decide["⚖️ Pure Decision Algebra<br/><code>decide(checks, strictness)</code>"]
     Decide --> Outcome["🎯 Outcome: PASS | STEP_UP | DECLINE<br/>+ Ed25519 Signed Receipt"]
-
-    classDef primary fill:#2563eb,stroke:#1d4ed8,color:#ffffff;
-    classDef success fill:#16a34a,stroke:#15803d,color:#ffffff;
-    classDef warning fill:#d97706,stroke:#b45309,color:#ffffff;
 ```
 
 ---
