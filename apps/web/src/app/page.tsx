@@ -1031,8 +1031,8 @@ export default function LandingPage() {
         <section className="cyber-stats">
           {/* Stat 1 */}
           <div className="cyber-stat-item s1">
-            <div className="cyber-stat-num">300+</div>
-            <div className="cyber-stat-lab">Clients</div>
+            <div className="cyber-stat-num">&lt;15ms</div>
+            <div className="cyber-stat-lab">Deterministic Latency</div>
           </div>
 
           {/* Divider Rule 1 */}
@@ -1040,8 +1040,8 @@ export default function LandingPage() {
 
           {/* Stat 2 */}
           <div className="cyber-stat-item s2">
-            <div className="cyber-stat-num">99%</div>
-            <div className="cyber-stat-lab">Satisfaction</div>
+            <div className="cyber-stat-num">94.2%</div>
+            <div className="cyber-stat-lab">Intent Recall</div>
           </div>
 
           {/* Divider Rule 2 */}
@@ -1049,8 +1049,8 @@ export default function LandingPage() {
 
           {/* Stat 3 */}
           <div className="cyber-stat-item s3">
-            <div className="cyber-stat-num">$5M+</div>
-            <div className="cyber-stat-lab">Revenue</div>
+            <div className="cyber-stat-num">100%</div>
+            <div className="cyber-stat-lab">Ed25519 Verified</div>
           </div>
         </section>
 
@@ -1109,7 +1109,7 @@ export default function LandingPage() {
                 <path d="M12.1 1L20.1 9L12.1 17" />
               </svg>
             </Link>
-            <div className="cyber-menu-note">300+ clients &nbsp;/&nbsp; 99% satisfaction</div>
+            <div className="cyber-menu-note">&lt;15ms latency &nbsp;/&nbsp; 94.2% intent recall</div>
           </div>
         </div>
       </div>
