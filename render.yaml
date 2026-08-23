@@ -1,0 +1,27 @@
+services:
+  # ── PostgreSQL Managed Database ──
+  - type: postgres
+    name: concord-db
+    plan: free
+    ipAllowList: []
+
+  # ── Concord Backend API (Includes Scalar Docs) ──
+  - type: web
+    name: concord-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build --workspace=packages/schema && npm run build --workspace=packages/core && npm run build --workspace=apps/api
+    startCommand: npm run start --workspace=apps/api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: concord-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: CONCORD_DEFAULT_STRICTNESS
+        value: "0.75"
