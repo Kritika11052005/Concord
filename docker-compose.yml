@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # ── PostgreSQL Database ──
+  postgres:
+    image: postgres:16-alpine
+    container_name: concord-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-concord_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-concord_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-concord_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-concord_admin} -d ${POSTGRES_DB:-concord_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Concord Core Verification API ──
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: concord-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_USER:-concord_admin}:${POSTGRES_PASSWORD:-concord_secret}@postgres:5432/${POSTGRES_DB:-concord_db}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      CONCORD_DEFAULT_STRICTNESS: ${CONCORD_DEFAULT_STRICTNESS:-0.75}
+    ports:
+      - "3001:3001"
+
+  # ── Concord Web App & Merchant Console ──
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: concord-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+    driver: local

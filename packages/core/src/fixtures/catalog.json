@@ -1,0 +1,323 @@
+[
+  {
+    "sku": "SKU_ESP_13200",
+    "title": "Barista Pro 15-Bar Compact Espresso Machine",
+    "description": "Premium 15-bar Italian pump espresso machine with integrated milk frother, PID temperature control, and stainless steel portafilter for rich crema espresso.",
+    "category": "Espresso Machine",
+    "category_path": ["Kitchen", "Coffee", "Espresso Machines"],
+    "brand": "BaristaPro",
+    "price_paise": 1320000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "espresso machine",
+      "power": "1350W",
+      "pressure": "15 bar",
+      "capacity": "1.5L",
+      "color": "Stainless Steel"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_GRIND_14500",
+    "title": "AromaMaster Precision Conical Burr Coffee Grinder",
+    "description": "Professional 40mm conical steel burr grinder with 30 micro-settings from espresso to French press. The complete espresso preparation companion.",
+    "category": "Coffee Grinder",
+    "category_path": ["Kitchen", "Coffee", "Grinders"],
+    "brand": "AromaMaster",
+    "price_paise": 1450000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "coffee grinder",
+      "burr_type": "conical steel",
+      "settings": "30",
+      "capacity": "250g",
+      "color": "Matte Black"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1589396575653-c09c794ff6a6?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_POUR_12000",
+    "title": "Artisan Handcrafted Glass Pour-Over Drip Coffee Maker",
+    "description": "Thermal-resistant borosilicate glass pour-over brewer with permanent stainless steel fine-mesh filter. Manual pour-over coffee extraction.",
+    "category": "Pour-Over Coffee Maker",
+    "category_path": ["Kitchen", "Coffee", "Manual Brewers"],
+    "brand": "ArtisanBrew",
+    "price_paise": 1200000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "pour-over coffee maker",
+      "material": "borosilicate glass",
+      "capacity": "800ml",
+      "filter": "reusable steel mesh"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_TRAIL_7800",
+    "title": "Apex Terra Grip Trail Running Shoes (Size 8)",
+    "description": "All-terrain trail running shoes with Vibram multidirectional lugged outsole, reinforced rock plate, water-repellent ripstop mesh, and size 8 fit.",
+    "category": "Trail Running Shoes",
+    "category_path": ["Footwear", "Running", "Trail"],
+    "brand": "Apex",
+    "price_paise": 780000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "trail running shoes",
+      "size": "8",
+      "terrain": "trail",
+      "waterproof": "water-repellent",
+      "color": "Charcoal/Teal"
+    },
+    "delivery_days": 3,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_ROAD_7900",
+    "title": "AeroPace Speed Road Running Shoes (Size 8)",
+    "description": "Lightweight responsive road racing and pavement shoes with smooth blown-rubber outsole, high energy return foam, and breathable engineered mesh.",
+    "category": "Road Running Shoes",
+    "category_path": ["Footwear", "Running", "Road"],
+    "brand": "AeroPace",
+    "price_paise": 790000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "road running shoes",
+      "size": "8",
+      "terrain": "road / pavement",
+      "waterproof": "none",
+      "color": "Neon Orange"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_TRAIL_9500",
+    "title": "Apex Terra Pro Carbon Trail Runner (Size 8)",
+    "description": "Elite ultramarathon trail racing shoe with integrated carbon-fiber plate and aggressive 6mm wet-traction lugs.",
+    "category": "Trail Running Shoes",
+    "category_path": ["Footwear", "Running", "Trail"],
+    "brand": "Apex",
+    "price_paise": 950000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "trail running shoes",
+      "size": "8",
+      "terrain": "trail",
+      "plate": "carbon"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_HEADPHONE_ANC_WIRELESS",
+    "title": "SonicQuiet 500 Wireless Active Noise Cancelling Headphones",
+    "description": "Over-ear Bluetooth 5.3 headphones with hybrid ANC, 40-hour battery life, multipoint pairing, and built-in voice microphones.",
+    "category": "Wireless Headphones",
+    "category_path": ["Electronics", "Audio", "Headphones"],
+    "brand": "SonicQuiet",
+    "price_paise": 1699000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "wireless headphones",
+      "connectivity": "bluetooth / wireless",
+      "anc": "true",
+      "battery": "40h",
+      "form_factor": "over-ear"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_HEADPHONE_WIRED_STUDIO",
+    "title": "SonicQuiet Pro Studio Reference Wired Monitor Headphones",
+    "description": "Wired studio monitor headphones with flat frequency curve, 45mm neodymium drivers, detachable coiled 3.5mm/6.35mm cable. No battery or wireless radio.",
+    "category": "Wired Studio Headphones",
+    "category_path": ["Electronics", "Audio", "Headphones"],
+    "brand": "SonicQuiet",
+    "price_paise": 1550000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "wired headphones",
+      "connectivity": "wired",
+      "anc": "false",
+      "impedance": "80 ohm",
+      "form_factor": "over-ear"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_SMARTWATCH_GPS",
+    "title": "PulseFit Horizon GPS Outdoor Smartwatch",
+    "description": "Multi-sport outdoor smartwatch with dual-frequency standalone GPS, 1.43-inch AMOLED touch display, heart rate, SpO2, and 14-day battery life.",
+    "category": "Smartwatch",
+    "category_path": ["Electronics", "Wearables", "Smartwatches"],
+    "brand": "PulseFit",
+    "price_paise": 849900,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "smartwatch",
+      "gps": "standalone built-in GPS",
+      "display": "AMOLED touch",
+      "water_rating": "5ATM"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_FITNESS_BAND",
+    "title": "PulseFit Tracker Band 8 Activity Monitor",
+    "description": "Slim fitness activity band with connected-GPS (requires smartphone phone nearby), step tracker, sleep monitor, and 0.96-inch OLED screen.",
+    "category": "Fitness Tracker Band",
+    "category_path": ["Electronics", "Wearables", "Fitness Trackers"],
+    "brand": "PulseFit",
+    "price_paise": 329900,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "fitness band",
+      "gps": "connected GPS (phone required)",
+      "display": "OLED",
+      "water_rating": "IP68"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_DOG_FOOD_10KG",
+    "title": "NutraPup Complete Grain-Free Adult Dog Food (10kg)",
+    "description": "High-protein dry kibble formulated for adult dogs with real free-range chicken, sweet potato, probiotics, and omega 3 fatty acids.",
+    "category": "Dog Food",
+    "category_path": ["Pet Care", "Dog Supplies", "Food"],
+    "brand": "NutraPup",
+    "price_paise": 380000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "dog food",
+      "pet_type": "dog",
+      "weight": "10kg",
+      "formula": "grain-free"
+    },
+    "delivery_days": 3,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_CAT_FOOD_10KG",
+    "title": "NutraCat Gourmet Ocean Fish Adult Cat Food (10kg)",
+    "description": "Nutritionally balanced dry cat food with wild salmon, taurine for heart and eye health, and hairball control complex.",
+    "category": "Cat Food",
+    "category_path": ["Pet Care", "Cat Supplies", "Food"],
+    "brand": "NutraCat",
+    "price_paise": 380000,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "cat food",
+      "pet_type": "cat",
+      "weight": "10kg",
+      "formula": "ocean fish"
+    },
+    "delivery_days": 3,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_BACKPACK_WATERPROOF",
+    "title": "NordicPeak 30L Waterproof Expedition Hiking Backpack",
+    "description": "Ergonomic 30-liter trekking daypack made of 420D ripstop TPU-coated waterproof nylon with breathable back panel and hydration sleeve.",
+    "category": "Hiking Backpack",
+    "category_path": ["Outdoor", "Travel", "Backpacks"],
+    "brand": "NordicPeak",
+    "price_paise": 499900,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "hiking backpack",
+      "capacity": "30L",
+      "waterproof": "100% IPX6 waterproof",
+      "weight": "850g"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_MECHANICAL_KEYBOARD",
+    "title": "KeyCraft RGB Hot-Swappable 75% Mechanical Keyboard",
+    "description": "Customizable 75% layout mechanical gaming keyboard with pre-lubed tactile switches, PBT keycaps, sound-dampening foam, and per-key RGB backlighting.",
+    "category": "Mechanical Keyboard",
+    "category_path": ["Computers", "Peripherals", "Keyboards"],
+    "brand": "KeyCraft",
+    "price_paise": 649900,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "mechanical keyboard",
+      "switch_type": "tactile hot-swap",
+      "layout": "75%",
+      "backlight": "RGB"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80"
+  },
+  {
+    "sku": "SKU_MEMBRANE_KEYBOARD",
+    "title": "KeyCraft Office Silent Membrane Keyboard",
+    "description": "Full-size slim membrane keyboard with whisper-quiet low-profile scissor keys, spill-resistant surface, and integrated wrist rest.",
+    "category": "Membrane Keyboard",
+    "category_path": ["Computers", "Peripherals", "Keyboards"],
+    "brand": "KeyCraft",
+    "price_paise": 219900,
+    "currency": "INR",
+    "condition": "new",
+    "refundable": true,
+    "attributes": {
+      "type": "membrane keyboard",
+      "switch_type": "membrane / scissor",
+      "layout": "100% full-size",
+      "backlight": "none"
+    },
+    "delivery_days": 2,
+    "in_stock": true,
+    "image_url": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600&auto=format&fit=crop&q=80"
+  }
+]

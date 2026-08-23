@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 46" fill="none">
+  <rect width="46" height="46" rx="6" fill="#000000" />
+  <!-- North Arm -->
+  <path d="M23 0V19.5" stroke="#ffffff" stroke-width="3" stroke-linecap="square" />
+  <path d="M14 10.2L23 19.2L32 10.2" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" />
+  <!-- East Arm -->
+  <path d="M46 23H26.5" stroke="#ffffff" stroke-width="3" stroke-linecap="square" />
+  <path d="M35.8 14L26.8 23L35.8 32" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" />
+  <!-- South Arm -->
+  <path d="M23 46V26.5" stroke="#ffffff" stroke-width="3" stroke-linecap="square" />
+  <path d="M32 35.8L23 26.8L14 35.8" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" />
+  <!-- West Arm -->
+  <path d="M0 23H19.5" stroke="#ffffff" stroke-width="3" stroke-linecap="square" />
+  <path d="M10.2 32L19.2 23L10.2 14" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter" />
+</svg>

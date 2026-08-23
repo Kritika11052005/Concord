@@ -1,0 +1,147 @@
+{
+  "timestamp": "2026-08-23T15:01:11.763Z",
+  "total_pairs": 60,
+  "conforming_pairs": 30,
+  "mismatched_pairs": 30,
+  "headline": {
+    "overall_precision": 1,
+    "overall_recall": 0.9,
+    "held_out_precision": 1,
+    "held_out_recall": 0.8181818181818182,
+    "dev_recall": 0.9473684210526315,
+    "false_positive_rate": 0,
+    "false_negative_rate": 0.1,
+    "reason_accuracy": 1
+  },
+  "per_class": {
+    "C1": {
+      "total": 6,
+      "caught": 0,
+      "false_blocked": 0
+    },
+    "C2": {
+      "total": 6,
+      "caught": 0,
+      "false_blocked": 0
+    },
+    "C3": {
+      "total": 6,
+      "caught": 0,
+      "false_blocked": 0
+    },
+    "C4": {
+      "total": 6,
+      "caught": 0,
+      "false_blocked": 0
+    },
+    "C5": {
+      "total": 6,
+      "caught": 0,
+      "false_blocked": 0
+    },
+    "M1": {
+      "total": 6,
+      "caught": 5,
+      "false_blocked": 0
+    },
+    "M2": {
+      "total": 6,
+      "caught": 6,
+      "false_blocked": 0
+    },
+    "M3": {
+      "total": 5,
+      "caught": 3,
+      "false_blocked": 0
+    },
+    "M4": {
+      "total": 5,
+      "caught": 5,
+      "false_blocked": 0
+    },
+    "M5": {
+      "total": 8,
+      "caught": 8,
+      "false_blocked": 0
+    }
+  },
+  "strictness_curve": [
+    {
+      "strictness": 0.5,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.55,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.6,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.65,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.7,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.75,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.8,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.85,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.9,
+      "precision": 1,
+      "recall": 0.9
+    },
+    {
+      "strictness": 0.95,
+      "precision": 1,
+      "recall": 0.9
+    }
+  ],
+  "ablations": [
+    {
+      "name": "Deterministic Layer Only",
+      "description": "Layer 1 arithmetic/structured checks only, no semantic category reasoning",
+      "recall": 0.4,
+      "precision": 1
+    },
+    {
+      "name": "Semantic Layer Only",
+      "description": "LLM category reasoning only without structured deterministic constraints",
+      "recall": 0.8,
+      "precision": 0.86
+    },
+    {
+      "name": "Full Concord Pipeline",
+      "description": "Layer 1 deterministic + Layer 2 semantic + Platt calibration + fail-closed algebra",
+      "recall": 0.9,
+      "precision": 1
+    }
+  ],
+  "latency_benchmarks_ms": {
+    "deterministic_p50": 8,
+    "deterministic_p95": 18,
+    "semantic_p50": 120,
+    "semantic_p95": 380,
+    "total_warm_cache_p95": 240
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@concord/eval",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "eval": "tsx runner.ts"
+  },
+  "dependencies": {
+    "@concord/core": "*",
+    "@concord/schema": "*"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

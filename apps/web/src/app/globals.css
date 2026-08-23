@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SG';
+  src: local('Space Grotesk'), local('SpaceGrotesk-Regular'), local('SpaceGrotesk-Light');
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'JB';
+  src: local('JetBrains Mono'), local('JetBrainsMono-Regular');
+  font-display: block;
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --red: #c81b1c;
+  --ink: #ffffff;
+  --sub: #e6e6e6;
+  --lab: #949494;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'SG', 'Space Grotesk', -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom glow utilities */
+.glow-primary {
+  box-shadow: 0 0 35px -5px rgba(200, 27, 28, 0.35);
+}
+
+.glow-pass {
+  box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.35);
+}
+
+.glow-stepup {
+  box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.35);
+}
+
+.glow-decline {
+  box-shadow: 0 0 35px -5px rgba(200, 27, 28, 0.35);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
