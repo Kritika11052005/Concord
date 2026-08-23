@@ -302,6 +302,9 @@ app.get('/docs', (_req, res) => {
             <span class="concord-footer-author">Made by <strong>Kritika Benjwal</strong></span>
           </div>
           <div class="concord-footer-links">
+            <a href="https://github.com/Kritika11052005/Concord" target="_blank" rel="noopener noreferrer">
+              Kritika11052005/Concord
+            </a>
             <a href="https://github.com/Kritika11052005" target="_blank" rel="noopener noreferrer">
               GitHub
             </a>

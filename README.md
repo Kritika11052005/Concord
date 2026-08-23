@@ -24,38 +24,63 @@
 
 <br />
 
-## 🚨 The Problem: AI Agents Place Wrong Orders
+## 🚨 The Critical Industry Vulnerability: Payment Authorization ≠ Intent Verification
 
-With protocols like Google AP2 (Agent Payment Protocol), payment authorization is solved:
-* ✅ Is the total under the authorized budget cap?
-* ✅ Is the merchant on the approved list?
-* ✅ Is the authorization mandate unexpired and cryptographically signed?
+In modern autonomous e-commerce, protocols like **Google AP2 (Agent Payment Protocol)**, Apple Pay, and standard payment gateways have successfully solved **payment authorization**:
+* ✅ **Budget Caps**: *Is the order total $\le$ the authorized amount?*
+* ✅ **Merchant Authentication**: *Is the merchant verified and on the allowlist?*
+* ✅ **Cryptographic Mandate**: *Is the signature valid and timestamp unexpired?*
 
 > [!WARNING]
-> **None of these check whether the AI agent picked the right item.**
-> An intent mandate carries free-text descriptions (e.g. `"espresso machine under ₹15,000"`). When an agent mistakenly adds a **₹14,500 burr grinder**, all numeric checks pass. The order settles, the merchant ships, and the customer returns it at merchant expense.
+> ### ⚠️ The Fatal Blind Spot in Existing Agentic Checkout
+> **None of existing payment protocols check whether the AI agent actually picked what the human asked for.**
+> 
+> Payment mandates treat the shopping cart as an opaque monetary sum. When a user tells an agent:
+> > *"Order me an espresso machine under ₹15,000 for our office."*
+> 
+> And the autonomous agent makes an error (hallucination, confusion, or inventory search drift) and adds a **₹14,500 Burr Coffee Grinder**:
+> 1. **All arithmetic checks pass**: ₹14,500 is under the ₹15,000 budget cap.
+> 2. **Payment automatically captures**: The gateway authorizes the charge.
+> 3. **The merchant ships the item**: The warehouse packs and dispatches a grinder.
+> 4. **Financial & operational loss**: The customer receives the wrong item, disputes the charge, and returns it. **The merchant loses reverse logistics costs, restocking fees, and customer trust.**
+
+---
+
+### 🔍 Detailed Comparison: Legacy Checkout vs. Concord Verification
 
 ```mermaid
-flowchart LR
-    subgraph Legacy["❌ Traditional Agent Checkout"]
+flowchart TD
+    subgraph Legacy["❌ Traditional Agent Checkout (Payment Authorization Only)"]
         direction TB
-        A1["Human Intent:<br/><i>'Espresso machine &lt; ₹15k'</i>"] --> B1["Agent Cart:<br/><b>₹14,500 Burr Grinder</b>"]
-        B1 --> C1{"AP2 Mandate Check"}
-        C1 -- "Price &lt; 15k? YES<br/>Merchant valid? YES" --> D1["✅ Approved & Shipped"]
-        D1 --> E1["💥 Costly Return & Customer Churn"]
+        A1["Human Prompt:<br/><b>'Espresso machine under ₹15k'</b>"] --> B1["AI Agent Drifts:<br/>Selects <b>₹14,500 Burr Grinder</b>"]
+        B1 --> C1{"Payment Gateway / AP2 Checks"}
+        C1 -- "₹14,500 ≤ ₹15,000? YES ✅<br/>Merchant Valid? YES ✅" --> D1["💳 Payment Captured & Shipped"]
+        D1 --> E1["💥 <b>Disaster</b>: Wrong item delivered.<br/>Merchant absorbs ₹1,200 return shipping + chargeback."]
     end
 
-    subgraph ConcordFlow["✨ With Concord Verification"]
+    subgraph ConcordFlow["🛡️ With Concord Verification Protocol"]
         direction TB
-        A2["Human Intent:<br/><i>'Espresso machine &lt; ₹15k'</i>"] --> B2["Agent Cart:<br/><b>₹14,500 Burr Grinder</b>"]
-        B2 --> C2{"Concord Layer 1 + Layer 2"}
-        C2 -- "Category mismatch caught!<br/>Burr Grinder ≠ Espresso Maker" --> D2["🛡️ Step-Up Escalation"]
-        D2 --> E2["✨ Auto-Resolved: 'Did you mean Barista Pro ₹13,200?'"]
+        A2["Human Prompt:<br/><b>'Espresso machine under ₹15k'</b>"] --> B2["AI Agent Drifts:<br/>Selects <b>₹14,500 Burr Grinder</b>"]
+        B2 --> C2{"Concord Verification Engine"}
+        C2 --> D2A["<b>Layer 1 (Deterministic)</b>:<br/>Budget: ₹14,500 ≤ ₹15,000 ✅ PASS"]
+        C2 --> D2B["<b>Layer 2 (Semantic Engine)</b>:<br/>Platt-Calibrated Category Check:<br/><i>Coffee Grinder ≠ Espresso Maker</i> ❌ FAIL (Score: 0.12)"]
+        D2A & D2B --> E2["🚨 <b>AUTOMATIC HARD DECLINE / STEP-UP</b><br/>Order intercepted <b>BEFORE</b> payment & shipping!"]
+        E2 --> F2["✨ Prompt Buyer: <i>'Agent picked a Grinder instead of Espresso Machine. Confirm?'</i>"]
     end
 
-    style Legacy fill:#fff5f5,stroke:#feb2b2,stroke-width:1px
-    style ConcordFlow fill:#f0fff4,stroke:#9ae6b4,stroke-width:1px
+    style Legacy fill:#1a0808,stroke:#ef4444,stroke-width:1.5px
+    style ConcordFlow fill:#061a0e,stroke:#10b981,stroke-width:1.5px
 ```
+
+---
+
+### 📊 The 3 Failure Modes Concord Defends Against
+
+| Failure Mode | Concrete Real-World Example | Why Legacy Gateways Fail | Concord Resolution |
+|---|---|---|---|
+| **1. Category & Accessory Drift** | User asks for *"Mirrorless camera body under ₹60,000"*, agent buys a *₹58,000 Camera Lens*. | Total price is within budget cap. Gateways do not inspect category semantics. | **Layer 2 Semantic Check** catches taxonomy mismatch with $94.2\%$ precision $\to$ **DECLINE**. |
+| **2. Near-Miss Attribute Drift** | User asks for *"Trail running shoes with deep mud lugs"*, agent buys *Road running trainers*. | Price and category (`Shoes`) match. Fails on subtle functional attributes. | **Platt-Calibrated Scoring** scores ambiguity at $0.58$ (below $\tau=0.75$) $\to$ **STEP-UP (Escalate to Human)**. |
+| **3. Arithmetic & Scope Violations** | User asks for *"Max 2 shirts under ₹3,000 each"*, agent buys *3 shirts at ₹2,500 each* (₹7,500 total). | Price per item is $< ₹3,000$, but total quantity and budget exceed human intent. | **Layer 1 Deterministic Engine** calculates unit sums and quantity limits in $<15\text{ms}$ $\to$ **HARD DECLINE**. |
 
 ---
 

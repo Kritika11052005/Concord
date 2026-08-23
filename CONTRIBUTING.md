@@ -54,8 +54,8 @@ mindmap
 
 ```bash
 # 1. Fork & clone the repository
-git clone https://github.com/concord-org/concord.git
-cd concord
+git clone https://github.com/Kritika11052005/Concord.git
+cd Concord
 
 # 2. Install workspace dependencies
 npm install

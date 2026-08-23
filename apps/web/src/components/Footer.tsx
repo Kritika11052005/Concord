@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Github, Mail, Linkedin, ExternalLink } from 'lucide-react';
+import { Github, Mail, Linkedin, ExternalLink, GitBranch } from 'lucide-react';
 
 export function Footer() {
   const pathname = usePathname();
@@ -44,8 +44,19 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Social / Contact Links */}
-        <div className="flex items-center gap-4 text-xs font-mono">
+        {/* Social / Repo / Contact Links */}
+        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 text-xs font-mono">
+          <a
+            href="https://github.com/Kritika11052005/Concord"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-black border border-zinc-800 hover:border-[#c81b1c] hover:text-white transition rounded-none text-zinc-300"
+          >
+            <GitBranch className="w-3.5 h-3.5 text-[#c81b1c]" />
+            <span>Kritika11052005/Concord</span>
+            <ExternalLink className="w-2.5 h-2.5 text-zinc-500" />
+          </a>
+
           <a
             href="https://github.com/Kritika11052005"
             target="_blank"
@@ -53,7 +64,7 @@ export function Footer() {
             className="flex items-center gap-1.5 px-3 py-1.5 bg-black border border-zinc-800 hover:border-[#c81b1c] hover:text-white transition rounded-none text-zinc-300"
           >
             <Github className="w-3.5 h-3.5 text-[#c81b1c]" />
-            <span>GitHub</span>
+            <span>GitHub Profile</span>
             <ExternalLink className="w-2.5 h-2.5 text-zinc-500" />
           </a>
 

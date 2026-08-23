@@ -42,8 +42,9 @@ Authorization: Bearer ck_live_a8f93bc102...
 \`\`\`
 `,
     contact: {
-      name: 'Concord Security Engineering',
-      url: 'https://github.com/concord-verifier',
+      name: 'Kritika Benjwal (Concord)',
+      url: 'https://github.com/Kritika11052005/Concord',
+      email: 'ananya.benjwal@gmail.com',
     },
     license: {
       name: 'Apache-2.0',
