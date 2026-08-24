@@ -106,7 +106,7 @@ export default function ConsoleLayout({
             <ExternalLink className="h-3 w-3 text-zinc-500" />
           </Link>
           <a
-            href="http://localhost:3001/docs"
+            href="https://registry.scalar.com/@default-team-0xjt8/apis/concord-agent-order-verification-api-2@1.0.0"
             target="_blank"
             rel="noreferrer"
             className="flex items-center justify-between px-3 py-2 text-zinc-400 hover:text-white hover:bg-zinc-900 transition text-[11px]"
