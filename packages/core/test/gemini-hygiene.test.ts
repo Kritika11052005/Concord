@@ -23,7 +23,7 @@ describe('Gemini Provider & Hygiene Tests', () => {
         quantity: 1,
         condition: 'new',
         refundable: true,
-        attributes: { power_wattage: 1250 },
+        attributes: { power_wattage: '1250' },
       },
     ],
     total_amount: 1320000,
