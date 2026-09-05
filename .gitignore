@@ -41,3 +41,4 @@ coverage/
 # Temporary cache
 .turbo/
 .cache/
+eval/.eval_cache.json

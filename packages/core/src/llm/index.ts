@@ -345,9 +345,10 @@ export class MockLLMProvider implements LLMProvider {
       }
     }
 
-    // Fix B.2: Named-product residue check when typed constraints are empty
-    if (constraintSet.constraints.length === 0 && constraintSet.semantic_residue) {
-      const residue = constraintSet.semantic_residue.toLowerCase();
+    // Fix B.2: Named-product residue check when category/attribute constraints are empty
+    if (categoryConstraints.length === 0 && (constraintSet.semantic_residue || constraintSet.intent_text)) {
+      const targetResidue = constraintSet.semantic_residue || constraintSet.intent_text;
+      const residue = targetResidue.toLowerCase();
       const stopWords = new Set(['buy', 'get', 'order', 'purchase', 'the', 'and', 'for', 'with', 'under', 'from', 'this', 'that', 'item', 'product']);
       const residueWords = residue
         .replace(/[^a-z0-9\s]/g, ' ')
@@ -374,15 +375,15 @@ export class MockLLMProvider implements LLMProvider {
         if (grinderInResidue && espressoInLine && !grinderInLine) {
           isMatch = false;
           rawConf = 0.96;
-          reason = `Cart item is an espresso machine (${line.title}); you requested a coffee grinder ("${constraintSet.semantic_residue}").`;
+          reason = `Cart item is an espresso machine (${line.title}); you requested a coffee grinder ("${targetResidue}").`;
         } else if (matchRatio >= 0.5 || (matchingWords.length >= 2 && lineTitle.includes(matchingWords[0]))) {
           isMatch = true;
           rawConf = 0.98;
-          reason = `Cart item "${line.title}" matches requested named product "${constraintSet.semantic_residue}".`;
+          reason = `Cart item "${line.title}" matches requested named product "${targetResidue}".`;
         } else {
           isMatch = false;
           rawConf = 0.95;
-          reason = `Cart item "${line.title}" does not match requested product "${constraintSet.semantic_residue}".`;
+          reason = `Cart item "${line.title}" does not match requested product "${targetResidue}".`;
         }
 
         const calibratedConf = calibrateConfidence(rawConf);
@@ -399,7 +400,7 @@ export class MockLLMProvider implements LLMProvider {
           raw_confidence: rawConf,
           reason,
           observed: { category_path: line.category_path, title: line.title, brand: line.brand },
-          expected: { named_product: constraintSet.semantic_residue },
+          expected: { named_product: targetResidue },
         });
       }
     }
@@ -514,7 +515,41 @@ export class GoogleGeminiProvider implements LLMProvider {
 
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`;
-      const prompt = `Intent text: "${intentText}". Return valid JSON for { constraints: [{ id, kind, operator, value, scope, hardness, source_span: { start, end, text }, confidence }], semantic_residue, extraction_confidence }.`;
+      const prompt = `You are the Concord Intent Constraint Extractor v${EXTRACTOR_VERSION}.
+Analyze user intent: "${intentText}".
+ALLOWED CONSTRAINT KINDS (must be strictly one of these):
+- "price_max": budget cap (value: { type: "money", amount: number in minor units / paise, currency: string })
+- "price_min": minimum price
+- "delivery_date": deadline (value: { type: "date", value: "YYYY-MM-DD" })
+- "brand": brand requirement (value: { type: "text", value: string })
+- "quantity": count (value: { type: "number", value: number })
+- "refundable": refundability (value: { type: "boolean", value: boolean })
+- "condition": "new" | "refurbished" | "used"
+- "category": product category/type (value: { type: "text", value: string })
+- "attribute": product attribute/spec (value: { type: "text", value: string })
+
+SPECIAL DIRECTIVE FOR SPECIFIC NAMED PRODUCTS:
+If the user intent requests a specific named product (e.g. "buy AromaMaster Precision Conical Burr Coffee Grinder"), do NOT invent unknown kinds like "Product". Instead:
+- Set semantic_residue to the product name ("AromaMaster Precision Conical Burr Coffee Grinder").
+- Or extract kind: "category" with value: { type: "text", value: "<product name>" }.
+
+Return valid JSON:
+{
+  "constraints": [
+    {
+      "id": string,
+      "kind": string,
+      "operator": "eq" | "lte" | "gte",
+      "value": { "type": "text"|"money"|"number"|"boolean"|"date", "value": any, "amount"?: number, "currency"?: string },
+      "scope": "per_line" | "total",
+      "hardness": "hard" | "soft",
+      "source_span": { "start": number, "end": number, "text": string },
+      "confidence": number
+    }
+  ],
+  "semantic_residue": string | null,
+  "extraction_confidence": number
+}`;
 
       const res = await fetchGeminiWithRetry(url, {
         contents: [{ parts: [{ text: prompt }] }],
@@ -536,8 +571,50 @@ export class GoogleGeminiProvider implements LLMProvider {
       let parsedResidue = parsed.semantic_residue || null;
       let parsedConfidence = parsed.extraction_confidence ?? 0.9;
 
-      // Named product fallback if model returned empty constraints and null residue
-      if (parsedConstraints.length === 0 && !parsedResidue && (intentText.length > 20 || intentText.split(/\s+/).length > 5)) {
+      const validKinds = new Set([
+        'price_max', 'price_min', 'delivery_date', 'brand',
+        'quantity', 'refundable', 'condition', 'merchant',
+        'category', 'attribute',
+      ]);
+
+      const cleanedConstraints: any[] = [];
+      for (const c of parsedConstraints) {
+        let kind = (c.kind || '').toLowerCase();
+        if (kind === 'product' || kind === 'product_name' || kind === 'item' || kind === 'named_product') {
+          const valStr = typeof c.value === 'string' ? c.value : (c.value?.value || '');
+          if (valStr && !parsedResidue) {
+            parsedResidue = valStr;
+          }
+          kind = 'category';
+        }
+
+        if (validKinds.has(kind)) {
+          let val = c.value;
+          if (typeof val === 'string') {
+            val = { type: 'text', value: val };
+          }
+          let span = c.source_span;
+          if (!span || typeof span.start !== 'number' || typeof span.end !== 'number' || !span.text) {
+            const idx = intentText.toLowerCase().indexOf((val?.value || '').toLowerCase());
+            if (idx >= 0 && val?.value) {
+              span = { start: idx, end: idx + val.value.length, text: intentText.slice(idx, idx + val.value.length) };
+            } else {
+              span = { start: 0, end: intentText.length, text: intentText };
+            }
+          }
+          cleanedConstraints.push({
+            ...c,
+            kind,
+            value: val,
+            source_span: span,
+          });
+        }
+      }
+      parsedConstraints = cleanedConstraints;
+
+      // Named product fallback: if no category/attribute constraints exist or residue not set
+      const hasCategoryOrAttr = parsedConstraints.some((c: any) => c.kind === 'category' || c.kind === 'attribute');
+      if (!hasCategoryOrAttr && !parsedResidue && (intentText.length > 15 || intentText.split(/\s+/).length > 3)) {
         const verbMatch = intentText.match(/^(?:buy|get|order|purchase)\s+(?:me\s+)?(?:a\s+|an\s+|the\s+)?(.+)/i);
         parsedResidue = verbMatch ? verbMatch[1].trim() : intentText;
         parsedConfidence = 0.65;
@@ -592,14 +669,17 @@ export class GoogleGeminiProvider implements LLMProvider {
       });
     }
 
-    if (checksToRun.length === 0 && constraintSet.semantic_residue) {
-      checksToRun.push({
-        id: 'c_residue_match',
-        kind: 'category',
-        hardness: 'hard',
-        requirementText: constraintSet.semantic_residue,
-        expected: { named_product: constraintSet.semantic_residue },
-      });
+    if (checksToRun.length === 0) {
+      const targetText = constraintSet.semantic_residue || constraintSet.intent_text;
+      if (targetText && targetText.trim()) {
+        checksToRun.push({
+          id: 'c_residue_match',
+          kind: 'category',
+          hardness: 'hard',
+          requirementText: targetText.trim(),
+          expected: { named_product: targetText.trim() },
+        });
+      }
     }
 
     if (checksToRun.length === 0) {

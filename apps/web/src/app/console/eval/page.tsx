@@ -7,16 +7,16 @@ export default function ConsoleEvalPage() {
   const [selectedStrictness, setSelectedStrictness] = useState<number>(0.75);
 
   const strictnessData = [
-    { s: 0.50, p: 0.88, r: 0.98 },
-    { s: 0.55, p: 0.89, r: 0.98 },
-    { s: 0.60, p: 0.91, r: 0.96 },
-    { s: 0.65, p: 0.92, r: 0.96 },
-    { s: 0.70, p: 0.93, r: 0.95 },
-    { s: 0.75, p: 0.94, r: 0.94 }, // Default
-    { s: 0.80, p: 0.96, r: 0.90 },
-    { s: 0.85, p: 0.97, r: 0.86 },
-    { s: 0.90, p: 0.98, r: 0.80 },
-    { s: 0.95, p: 0.99, r: 0.72 },
+    { s: 0.50, p: 0.83, r: 0.94 },
+    { s: 0.55, p: 0.83, r: 0.94 },
+    { s: 0.60, p: 0.83, r: 0.94 },
+    { s: 0.65, p: 0.83, r: 0.94 },
+    { s: 0.70, p: 0.83, r: 0.94 },
+    { s: 0.75, p: 0.83, r: 0.94 }, // Default
+    { s: 0.80, p: 0.83, r: 0.94 },
+    { s: 0.85, p: 0.83, r: 0.94 },
+    { s: 0.90, p: 0.83, r: 0.94 },
+    { s: 0.95, p: 0.83, r: 0.94 },
   ];
 
   const currentSweep =
@@ -32,7 +32,7 @@ export default function ConsoleEvalPage() {
             Evaluation Benchmark (62-Pair Ground Truth Benchmark)
           </h1>
           <p className="text-xs text-zinc-400 font-mono mt-0.5">
-            Measured accuracy, false-positive trade-offs, ablations, and Platt calibration reliability
+            Measured accuracy, false-positive trade-offs, ablations, and Platt calibration reliability against live Gemini 2.5 Flash
           </p>
         </div>
       </div>
@@ -48,19 +48,19 @@ export default function ConsoleEvalPage() {
             <div className="text-sm font-bold text-white">Held-Out Test Split (n=11)</div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Precision:</span>
-              <span className="text-white font-bold">100.0%</span>
+              <span className="text-white font-bold">90.9%</span>
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Recall:</span>
-              <span className="text-emerald-400 font-bold">81.8%</span>
+              <span className="text-emerald-400 font-bold">90.9%</span>
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">False Positive Rate (Blocked Good Sales):</span>
-              <span className="text-zinc-300 font-bold">0.0%</span>
+              <span className="text-zinc-300 font-bold">9.1%</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-zinc-400">False Negative Rate (Shipped Wrong Items):</span>
-              <span className="text-amber-300 font-bold">18.2%</span>
+              <span className="text-amber-300 font-bold">9.1%</span>
             </div>
           </div>
 
@@ -68,7 +68,7 @@ export default function ConsoleEvalPage() {
             <div className="text-sm font-bold text-zinc-300">Dev Tuning Split (n=20)</div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Precision:</span>
-              <span className="text-white font-bold">100.0%</span>
+              <span className="text-white font-bold">80.0%</span>
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Recall:</span>
@@ -76,11 +76,11 @@ export default function ConsoleEvalPage() {
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Reason Accuracy (Right Check Fired):</span>
-              <span className="text-zinc-200 font-bold">100.0%</span>
+              <span className="text-zinc-200 font-bold">72.4%</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-zinc-400">Overall Pipeline Recall (n=31):</span>
-              <span className="text-white font-bold">90.3%</span>
+              <span className="text-white font-bold">93.5%</span>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function ConsoleEvalPage() {
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M3</td>
                 <td className="py-2.5 px-3 text-zinc-200">Quantity Drift (Scope Handling)</td>
                 <td className="py-2.5 px-3 text-zinc-400">5 pairs</td>
-                <td className="py-2.5 px-3 text-right font-bold text-amber-400">3/5 (60%)</td>
+                <td className="py-2.5 px-3 text-right font-bold text-emerald-400">4/5 (80%)</td>
               </tr>
               <tr className="hover:bg-zinc-900/40">
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M4</td>
@@ -230,8 +230,8 @@ export default function ConsoleEvalPage() {
                 <td className="py-2.5 px-3 text-zinc-200 font-medium">
                   Layer 1 deterministic + Layer 2 semantic + Platt calibration + fail-closed algebra
                 </td>
-                <td className="py-2.5 px-3 text-emerald-400 font-bold">100.0%</td>
-                <td className="py-2.5 px-3 text-right text-emerald-400 font-bold">90.3%</td>
+                <td className="py-2.5 px-3 text-emerald-400 font-bold">82.9%</td>
+                <td className="py-2.5 px-3 text-right text-emerald-400 font-bold">93.5%</td>
               </tr>
             </tbody>
           </table>

@@ -5,6 +5,7 @@ import type { Cart, CartLine, ProductSKU } from '@concord/schema';
 import {
   CATALOG,
   MockLLMProvider,
+  createLLMProvider,
   decide,
   evaluateDeterministicChecks,
   validateConstraintSet,
@@ -12,6 +13,19 @@ import {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Load .env if present
+const envPath = path.resolve(__dirname, '../.env');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  for (const line of envContent.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const [key, ...vals] = trimmed.split('=');
+    const val = vals.join('=').replace(/^["']|["']$/g, '');
+    if (key && val && !process.env[key.trim()]) process.env[key.trim()] = val.trim();
+  }
+}
 
 interface EvalPair {
   pair_id: string;
@@ -82,9 +96,13 @@ async function runEvaluation() {
   console.log(`  CONCORD EVALUATION HARNESS — ${dataset.length}-PAIR BENCHMARK`);
   console.log('='.repeat(70));
 
-  const provider = new MockLLMProvider();
+  const providerType = process.env.LLM_PROVIDER || 'gemini-2.5-flash';
+  const apiKey = process.env.LLM_API_KEY || process.env.GEMINI_API_KEY || '';
+  console.log(`  Provider: ${providerType} | API Key present: ${!!apiKey}`);
+  const provider = createLLMProvider(providerType, apiKey);
   const results: any[] = [];
   const failures: any[] = [];
+  const pairEvaluations: Array<{ pair: EvalPair; checks: any[]; extractionConfidence: number }> = [];
 
   const classCounts: Record<string, ClassCount> = {};
 
@@ -100,10 +118,21 @@ async function runEvaluation() {
   let heldOutTP = 0;
   let heldOutConforming = 0;
   let heldOutTN = 0;
-
   let reasonCorrectCount = 0;
 
+  const cacheFilePath = path.join(__dirname, '.eval_cache.json');
+  let persistentCache: Record<string, { constraintSet: any; semChecks: any[] }> = {};
+  if (fs.existsSync(cacheFilePath)) {
+    try {
+      persistentCache = JSON.parse(fs.readFileSync(cacheFilePath, 'utf8'));
+    } catch {
+      persistentCache = {};
+    }
+  }
+
+  let pairIdx = 0;
   for (const pair of dataset) {
+    pairIdx++;
     const className = pair.class;
     if (!classCounts[className]) {
       classCounts[className] = { total: 0, mismatched_total: 0, conforming_total: 0, caught: 0, false_blocked: 0 };
@@ -112,8 +141,20 @@ async function runEvaluation() {
 
     const cart = buildCartFromPair(pair);
 
-    // 1. Extract
-    const constraintSet = await provider.extractConstraints(pair.intent);
+    // 1. Extract & 2. Semantic (with persistent cache for resilient runs)
+    const cacheKey = `${pair.pair_id}_${pair.intent}_${pair.cart_sku}_${pair.injected_description || ''}`;
+    let constraintSet: any;
+    let semChecks: any[];
+
+    if (persistentCache[cacheKey]) {
+      constraintSet = persistentCache[cacheKey].constraintSet;
+      semChecks = persistentCache[cacheKey].semChecks;
+    } else {
+      constraintSet = await provider.extractConstraints(pair.intent);
+      semChecks = await provider.evaluateSemantic(constraintSet, cart);
+      persistentCache[cacheKey] = { constraintSet, semChecks };
+      fs.writeFileSync(cacheFilePath, JSON.stringify(persistentCache, null, 2));
+    }
 
     // 2. Validate
     const validation = validateConstraintSet(constraintSet, cart.currency);
@@ -121,14 +162,13 @@ async function runEvaluation() {
 
     // 3. Deterministic checks
     const detChecks = evaluateDeterministicChecks(constraintSet, cart);
-
-    // 4. Semantic checks
-    const semChecks = await provider.evaluateSemantic(constraintSet, cart);
     const allChecks = [...detChecks, ...semChecks];
 
     // 5. Decision
     const outcome = decide(allChecks, extractionConf, 0.75);
     const intervened = outcome.decision === 'step_up' || outcome.decision === 'decline';
+
+    console.log(`  [${String(pairIdx).padStart(2, ' ')}/${dataset.length}] ${pair.pair_id.padEnd(10)} (${pair.class}) -> ${outcome.decision.toUpperCase().padEnd(7)} (${allChecks.length} checks, ${intervened ? 'INTERVENED' : 'PASS'})`);
 
     const isMismatched = pair.label === 'mismatched';
     const isConforming = pair.label === 'conforming';
@@ -190,6 +230,12 @@ async function runEvaluation() {
         });
       }
     }
+
+    pairEvaluations.push({
+      pair,
+      checks: allChecks,
+      extractionConfidence: extractionConf,
+    });
 
     results.push({
       pair_id: pair.pair_id,
@@ -256,16 +302,12 @@ async function runEvaluation() {
   for (const s of sweepValues) {
     let sTP = 0;
     let sFP = 0;
-    for (const pair of dataset) {
-      const cart = buildCartFromPair(pair);
-      const cSet = await provider.extractConstraints(pair.intent);
-      const dChecks = evaluateDeterministicChecks(cSet, cart);
-      const sChecks = await provider.evaluateSemantic(cSet, cart);
-      const out = decide([...dChecks, ...sChecks], cSet.extraction_confidence, s);
+    for (const item of pairEvaluations) {
+      const out = decide(item.checks, item.extractionConfidence, s);
       const sIntervened = out.decision === 'step_up' || out.decision === 'decline';
 
-      if (pair.label === 'mismatched' && sIntervened) sTP++;
-      if (pair.label === 'conforming' && sIntervened) sFP++;
+      if (item.pair.label === 'mismatched' && sIntervened) sTP++;
+      if (item.pair.label === 'conforming' && sIntervened) sFP++;
     }
 
     const p = sTP / (sTP + sFP || 1);
