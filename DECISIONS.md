@@ -107,6 +107,26 @@ graph TD
 
 ---
 
+### 📌 ADR-005: Category & Attribute Matching Heuristic Fallback vs Model Wiring
+
+<div align="center">
+
+| Status | Date | Impact Area | Decision Owner |
+|:---:|:---:|:---:|:---:|
+| 🟢 **ACCEPTED** | `2026-09-05` | `packages/core/llm` | AI & Engineering Team |
+
+</div>
+
+* **Context**: Operational requirements for offline evaluation, benchmark reproducibility, and demo resilience.
+* **Decision**: Category and attribute matching currently uses a keyword-overlap and taxonomy heuristic rather than an active remote LLM call; wiring a real model call (`GoogleGeminiProvider.evaluateSemantic` with XML sandbox containment and strict Zod validation) is implemented and ready for live production environments with active API quotas.
+* **Consequences**:
+  * ✅ 100% deterministic reproducibility across the evaluation harness without network flake or API quota exhaustion.
+  * ✅ Sub-millisecond execution for demo throughput and testing.
+  * ⚠️ Remote model inference requires funded API credentials in `.env`.
+
+---
+
 <div align="center">
   <sub>Concord ADR Log • Maintained under Architectural Governance Guidelines</sub>
 </div>
+

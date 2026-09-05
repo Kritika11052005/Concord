@@ -1,67 +1,94 @@
 {
-  "timestamp": "2026-08-23T15:01:11.763Z",
-  "total_pairs": 60,
-  "conforming_pairs": 30,
-  "mismatched_pairs": 30,
+  "timestamp": "2026-09-05T05:58:42.865Z",
+  "total_pairs": 62,
+  "conforming_pairs": 31,
+  "mismatched_pairs": 31,
   "headline": {
     "overall_precision": 1,
-    "overall_recall": 0.9,
+    "overall_recall": 0.9032258064516129,
     "held_out_precision": 1,
     "held_out_recall": 0.8181818181818182,
-    "dev_recall": 0.9473684210526315,
+    "dev_recall": 0.95,
     "false_positive_rate": 0,
-    "false_negative_rate": 0.1,
+    "false_negative_rate": 0.0967741935483871,
     "reason_accuracy": 1
   },
   "per_class": {
     "C1": {
       "total": 6,
+      "mismatched_total": 0,
+      "conforming_total": 6,
       "caught": 0,
       "false_blocked": 0
     },
     "C2": {
       "total": 6,
+      "mismatched_total": 0,
+      "conforming_total": 6,
       "caught": 0,
       "false_blocked": 0
     },
     "C3": {
       "total": 6,
+      "mismatched_total": 0,
+      "conforming_total": 6,
       "caught": 0,
       "false_blocked": 0
     },
     "C4": {
       "total": 6,
+      "mismatched_total": 0,
+      "conforming_total": 6,
       "caught": 0,
       "false_blocked": 0
     },
     "C5": {
       "total": 6,
+      "mismatched_total": 0,
+      "conforming_total": 6,
       "caught": 0,
       "false_blocked": 0
     },
     "M1": {
       "total": 6,
+      "mismatched_total": 6,
+      "conforming_total": 0,
       "caught": 5,
       "false_blocked": 0
     },
     "M2": {
       "total": 6,
+      "mismatched_total": 6,
+      "conforming_total": 0,
       "caught": 6,
       "false_blocked": 0
     },
     "M3": {
       "total": 5,
+      "mismatched_total": 5,
+      "conforming_total": 0,
       "caught": 3,
       "false_blocked": 0
     },
     "M4": {
       "total": 5,
+      "mismatched_total": 5,
+      "conforming_total": 0,
       "caught": 5,
       "false_blocked": 0
     },
     "M5": {
       "total": 8,
+      "mismatched_total": 8,
+      "conforming_total": 0,
       "caught": 8,
+      "false_blocked": 0
+    },
+    "NP": {
+      "total": 2,
+      "mismatched_total": 1,
+      "conforming_total": 1,
+      "caught": 1,
       "false_blocked": 0
     }
   },
@@ -69,52 +96,52 @@
     {
       "strictness": 0.5,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.55,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.6,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.65,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.7,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.75,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.8,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.85,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.9,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     },
     {
       "strictness": 0.95,
       "precision": 1,
-      "recall": 0.9
+      "recall": 0.903
     }
   ],
   "ablations": [
@@ -133,7 +160,7 @@
     {
       "name": "Full Concord Pipeline",
       "description": "Layer 1 deterministic + Layer 2 semantic + Platt calibration + fail-closed algebra",
-      "recall": 0.9,
+      "recall": 0.903,
       "precision": 1
     }
   ],

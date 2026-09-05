@@ -156,6 +156,12 @@ export async function runMigration() {
         tokens NUMERIC NOT NULL,
         updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
+
+      CREATE TABLE IF NOT EXISTS rate_limits (
+        key VARCHAR(255) PRIMARY KEY,
+        points INTEGER DEFAULT 0 NOT NULL,
+        expire BIGINT
+      );
     `);
 
     // 3. Seed demo merchant if not exists

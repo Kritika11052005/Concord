@@ -638,5 +638,26 @@
     "expected_failing_constraint": "c_category",
     "expected_decision": "step_up",
     "rationale": "Hard near-miss class: Burr grinder vs espresso maker."
+  },
+  {
+    "pair_id": "NP-001",
+    "class": "NP",
+    "split": "dev",
+    "label": "mismatched",
+    "intent": "buy AromaMaster Precision Conical Burr Coffee Grinder",
+    "cart_sku": "SKU_ESP_13200",
+    "expected_failing_constraint": "c_residue_match",
+    "expected_decision": "decline",
+    "rationale": "Named-product intent: User requested AromaMaster Burr Grinder, cart contains Barista Pro Espresso Machine."
+  },
+  {
+    "pair_id": "NP-002",
+    "class": "NP",
+    "split": "dev",
+    "label": "conforming",
+    "intent": "buy AromaMaster Precision Conical Burr Coffee Grinder",
+    "cart_sku": "SKU_GRIND_14500",
+    "expected_decision": "pass",
+    "rationale": "Named-product intent: User requested AromaMaster Burr Grinder, cart contains exact matching AromaMaster Burr Grinder."
   }
 ]

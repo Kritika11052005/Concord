@@ -346,7 +346,7 @@ export function runBuyerAgentSim(
 
   let pickedSku: ProductSKU | undefined;
 
-  if (lower.includes('espresso') && (lower.includes('15,000') || lower.includes('15000') || lower.includes('friday'))) {
+  if (lower.includes('espresso') && (lower.includes('friday') || lower.includes('grinder'))) {
     pickedSku = catalog.find((i) => i.sku === 'SKU_GRIND_14500');
   } else if (lower.includes('trail running') && (lower.includes('8000') || lower.includes('8,000'))) {
     pickedSku = catalog.find((i) => i.sku === 'SKU_ROAD_7900');

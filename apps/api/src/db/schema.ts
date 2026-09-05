@@ -171,3 +171,10 @@ export const rateLimitBuckets = pgTable('rate_limit_buckets', {
   tokens: decimal('tokens').notNull(),
   updated_at: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+// 9. rate_limits (rate-limiter-flexible)
+export const rateLimits = pgTable('rate_limits', {
+  key: text('key').primaryKey(),
+  points: integer('points').notNull().default(0),
+  expire: bigint('expire', { mode: 'number' }),
+});

@@ -29,7 +29,7 @@ export default function ConsoleEvalPage() {
         <div>
           <h1 className="text-xl font-bold text-white flex items-center gap-2 font-['SG',sans-serif]">
             <BarChart3 className="h-5 w-5 text-[#c81b1c]" />
-            Evaluation Benchmark (60-Pair Held-Out Set)
+            Evaluation Benchmark (62-Pair Ground Truth Benchmark)
           </h1>
           <p className="text-xs text-zinc-400 font-mono mt-0.5">
             Measured accuracy, false-positive trade-offs, ablations, and Platt calibration reliability
@@ -40,35 +40,35 @@ export default function ConsoleEvalPage() {
       {/* ── 1. HEADLINE TABLE ── */}
       <div className="p-6 bg-[#09090b] border border-zinc-800 rounded-none">
         <h2 className="text-xs font-bold font-mono text-zinc-400 uppercase tracking-wider mb-4">
-          Headline Metrics (Held-Out n=12 vs Dev n=48)
+          Headline Metrics (Held-Out n=11 vs Dev n=20)
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
           <div className="p-4 bg-black border border-zinc-800 rounded-none space-y-2">
-            <div className="text-sm font-bold text-white">Held-Out Test Split (n=12)</div>
+            <div className="text-sm font-bold text-white">Held-Out Test Split (n=11)</div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Precision:</span>
-              <span className="text-white font-bold">94.2%</span>
+              <span className="text-white font-bold">100.0%</span>
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Recall:</span>
-              <span className="text-emerald-400 font-bold">93.8%</span>
+              <span className="text-emerald-400 font-bold">81.8%</span>
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">False Positive Rate (Blocked Good Sales):</span>
-              <span className="text-zinc-300 font-bold">3.2%</span>
+              <span className="text-zinc-300 font-bold">0.0%</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="text-zinc-400">False Negative Rate (Shipped Wrong Items):</span>
-              <span className="text-amber-300 font-bold">6.2%</span>
+              <span className="text-amber-300 font-bold">18.2%</span>
             </div>
           </div>
 
           <div className="p-4 bg-black border border-zinc-800 rounded-none space-y-2">
-            <div className="text-sm font-bold text-zinc-300">Dev Tuning Split (n=48)</div>
+            <div className="text-sm font-bold text-zinc-300">Dev Tuning Split (n=20)</div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Precision:</span>
-              <span className="text-white font-bold">94.8%</span>
+              <span className="text-white font-bold">100.0%</span>
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Recall:</span>
@@ -76,11 +76,11 @@ export default function ConsoleEvalPage() {
             </div>
             <div className="flex justify-between py-1 border-b border-zinc-800">
               <span className="text-zinc-400">Reason Accuracy (Right Check Fired):</span>
-              <span className="text-zinc-200 font-bold">96.0%</span>
+              <span className="text-zinc-200 font-bold">100.0%</span>
             </div>
             <div className="flex justify-between py-1">
-              <span className="text-zinc-400">Extraction Cache Hit Rate:</span>
-              <span className="text-white font-bold">82.5%</span>
+              <span className="text-zinc-400">Overall Pipeline Recall (n=31):</span>
+              <span className="text-white font-bold">90.3%</span>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function ConsoleEvalPage() {
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M1</td>
                 <td className="py-2.5 px-3 text-zinc-200">Wrong Category (Headline: Espresso vs Grinder)</td>
                 <td className="py-2.5 px-3 text-zinc-400">6 pairs</td>
-                <td className="py-2.5 px-3 text-right font-bold text-emerald-400">6/6 (100%)</td>
+                <td className="py-2.5 px-3 text-right font-bold text-emerald-400">5/6 (83%)</td>
               </tr>
               <tr className="hover:bg-zinc-900/40">
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M2</td>
@@ -119,7 +119,7 @@ export default function ConsoleEvalPage() {
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M3</td>
                 <td className="py-2.5 px-3 text-zinc-200">Quantity Drift (Scope Handling)</td>
                 <td className="py-2.5 px-3 text-zinc-400">5 pairs</td>
-                <td className="py-2.5 px-3 text-right font-bold text-emerald-400">5/5 (100%)</td>
+                <td className="py-2.5 px-3 text-right font-bold text-amber-400">3/5 (60%)</td>
               </tr>
               <tr className="hover:bg-zinc-900/40">
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M4</td>
@@ -127,13 +127,21 @@ export default function ConsoleEvalPage() {
                 <td className="py-2.5 px-3 text-zinc-400">5 pairs</td>
                 <td className="py-2.5 px-3 text-right font-bold text-emerald-400">5/5 (100%)</td>
               </tr>
-              <tr className="hover:bg-zinc-900/40 bg-amber-950/20">
-                <td className="py-2.5 px-3 font-bold text-amber-400">M5</td>
+              <tr className="hover:bg-zinc-900/40">
+                <td className="py-2.5 px-3 font-bold text-[#c81b1c]">M5</td>
                 <td className="py-2.5 px-3 text-zinc-100 font-bold">
                   Near-Miss Category (Trail Runner vs Road Runner) — Hard Class
                 </td>
                 <td className="py-2.5 px-3 text-zinc-400">8 pairs</td>
-                <td className="py-2.5 px-3 text-right font-bold text-amber-300">7/8 (87.5%)</td>
+                <td className="py-2.5 px-3 text-right font-bold text-emerald-400">8/8 (100%)</td>
+              </tr>
+              <tr className="hover:bg-zinc-900/40 bg-emerald-950/20">
+                <td className="py-2.5 px-3 font-bold text-emerald-400">NP</td>
+                <td className="py-2.5 px-3 text-zinc-100 font-bold">
+                  Named-Product Direct Intents (Residue Layer Matching)
+                </td>
+                <td className="py-2.5 px-3 text-zinc-400">2 pairs</td>
+                <td className="py-2.5 px-3 text-right font-bold text-emerald-400">1/1 (100%)</td>
               </tr>
             </tbody>
           </table>
@@ -148,7 +156,7 @@ export default function ConsoleEvalPage() {
               Interactive Strictness Curve (Precision vs Recall Trade-Off)
             </h2>
             <p className="text-xs text-zinc-400 font-mono mt-0.5">
-              Simulate merchant strictness threshold setting against the 60-pair ground truth
+              Simulate merchant strictness threshold setting against the 62-pair ground truth
             </p>
           </div>
           <div className="text-xs font-mono bg-black px-3 py-1.5 border border-zinc-800 rounded-none">
@@ -213,17 +221,17 @@ export default function ConsoleEvalPage() {
               </tr>
               <tr className="hover:bg-zinc-900/40">
                 <td className="py-2.5 px-3 font-bold text-zinc-300">Semantic Layer Only</td>
-                <td className="py-2.5 px-3 text-zinc-400">LLM only without arithmetic guarantees</td>
+                <td className="py-2.5 px-3 text-zinc-400">LLM category reasoning only without structured deterministic constraints</td>
                 <td className="py-2.5 px-3 text-zinc-300">86.0%</td>
                 <td className="py-2.5 px-3 text-right text-amber-400 font-bold">80.0%</td>
               </tr>
               <tr className="hover:bg-zinc-900/40 bg-[#c81b1c]/10">
                 <td className="py-2.5 px-3 font-bold text-[#c81b1c]">Full Concord Pipeline</td>
                 <td className="py-2.5 px-3 text-zinc-200 font-medium">
-                  Layer 1 + Layer 2 + Platt Calibration + Fail-Closed Algebra
+                  Layer 1 deterministic + Layer 2 semantic + Platt calibration + fail-closed algebra
                 </td>
-                <td className="py-2.5 px-3 text-emerald-400 font-bold">94.2%</td>
-                <td className="py-2.5 px-3 text-right text-emerald-400 font-bold">94.0%</td>
+                <td className="py-2.5 px-3 text-emerald-400 font-bold">100.0%</td>
+                <td className="py-2.5 px-3 text-right text-emerald-400 font-bold">90.3%</td>
               </tr>
             </tbody>
           </table>

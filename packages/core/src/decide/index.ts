@@ -103,6 +103,16 @@ export function decide(
     };
   }
 
+  // Zero-checks safety net -> STEP_UP
+  if (checks.length === 0) {
+    return {
+      decision: 'step_up',
+      rule_applied: 'zero_checks_safety_net',
+      reason: 'No constraints could be verified against this request.',
+      failing_checks: [],
+    };
+  }
+
   // 7. Otherwise -> PASS
   return {
     decision: 'pass',

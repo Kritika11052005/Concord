@@ -38,10 +38,10 @@ export default function ShopPage() {
       badge: 'PASS',
     },
     {
-      label: 'Step-Up: Espresso vs Grinder',
+      label: 'Decline: Espresso vs Grinder',
       intent: 'espresso machine under ₹15,000, delivered by Friday',
-      type: 'stepup',
-      badge: 'STEP-UP',
+      type: 'decline',
+      badge: 'DECLINE',
     },
     {
       label: 'Decline: Budget Violation',

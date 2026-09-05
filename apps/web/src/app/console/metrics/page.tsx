@@ -44,7 +44,7 @@ export default function ConsoleMetricsPage() {
         <div className="p-5 bg-[#09090b] border border-zinc-800 rounded-none">
           <div className="text-xs font-mono text-zinc-400 uppercase">Chain Height</div>
           <div className="text-2xl font-bold font-mono text-white mt-1">
-            #{metrics?.chain_length || 105}
+            #{metrics?.chain_length ?? 0}
           </div>
           <span className="text-[10px] text-emerald-400 font-mono">Unbroken · Zero Forks</span>
         </div>
@@ -52,7 +52,7 @@ export default function ConsoleMetricsPage() {
         <div className="p-5 bg-[#09090b] border border-zinc-800 rounded-none">
           <div className="text-xs font-mono text-zinc-400 uppercase">p95 Verify Latency</div>
           <div className="text-2xl font-bold font-mono text-[#c81b1c] mt-1">
-            {metrics?.p95_latency_ms || 185} ms
+            {metrics?.p95_latency_ms ?? 0} ms
           </div>
           <span className="text-[10px] text-zinc-400 font-mono">Sub-800ms target met</span>
         </div>
@@ -60,7 +60,7 @@ export default function ConsoleMetricsPage() {
         <div className="p-5 bg-[#09090b] border border-zinc-800 rounded-none">
           <div className="text-xs font-mono text-zinc-400 uppercase">Extraction Cache Hit</div>
           <div className="text-2xl font-bold font-mono text-white mt-1">
-            {((metrics?.cache_hit_rate || 0.82) * 100).toFixed(0)}%
+            {((metrics?.cache_hit_rate ?? 0) * 100).toFixed(0)}%
           </div>
           <span className="text-[10px] text-zinc-400 font-mono">Cold-path LLM absorbed</span>
         </div>
@@ -84,7 +84,7 @@ export default function ConsoleMetricsPage() {
           <div className="p-4 bg-black border border-emerald-900/60 rounded-none">
             <div className="text-xs text-emerald-400 font-bold uppercase">Pass Orders</div>
             <div className="text-3xl font-bold text-white mt-1">
-              {metrics?.decision_mix?.pass || 32}
+              {metrics?.decision_mix?.pass ?? 0}
             </div>
             <span className="text-[10px] text-zinc-400">Conforming agent checkouts</span>
           </div>
@@ -92,7 +92,7 @@ export default function ConsoleMetricsPage() {
           <div className="p-4 bg-black border border-amber-900/60 rounded-none">
             <div className="text-xs text-amber-400 font-bold uppercase">Step-Up Interceptions</div>
             <div className="text-3xl font-bold text-white mt-1">
-              {metrics?.decision_mix?.step_up || 18}
+              {metrics?.decision_mix?.step_up ?? 0}
             </div>
             <span className="text-[10px] text-zinc-400">Ambiguities / Near-misses</span>
           </div>
@@ -100,7 +100,7 @@ export default function ConsoleMetricsPage() {
           <div className="p-4 bg-black border border-rose-900/60 rounded-none">
             <div className="text-xs text-rose-400 font-bold uppercase">Hard Declines</div>
             <div className="text-3xl font-bold text-white mt-1">
-              {metrics?.decision_mix?.decline || 8}
+              {metrics?.decision_mix?.decline ?? 0}
             </div>
             <span className="text-[10px] text-zinc-400">Arithmetic budget violations</span>
           </div>
@@ -124,23 +124,25 @@ export default function ConsoleMetricsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/80">
-              {(metrics?.checks_breakdown || [
-                { constraint_kind: 'category', total: 58, failures: 22 },
-                { constraint_kind: 'price_max', total: 64, failures: 12 },
-                { constraint_kind: 'quantity', total: 32, failures: 5 },
-                { constraint_kind: 'delivery_by', total: 40, failures: 4 },
-                { constraint_kind: 'brand_allow', total: 18, failures: 1 },
-              ]).map((c: any, idx: number) => {
-                const rate = ((c.failures / (c.total || 1)) * 100).toFixed(0);
-                return (
-                  <tr key={idx} className="hover:bg-zinc-900/40">
-                    <td className="py-2.5 px-3 font-bold text-zinc-200">{c.constraint_kind}</td>
-                    <td className="py-2.5 px-3 text-zinc-400">{c.total}</td>
-                    <td className="py-2.5 px-3 text-amber-400 font-bold">{c.failures}</td>
-                    <td className="py-2.5 px-3 text-right text-white font-bold">{rate}%</td>
-                  </tr>
-                );
-              })}
+              {(metrics?.checks_breakdown && metrics.checks_breakdown.length > 0) ? (
+                metrics.checks_breakdown.map((c: any, idx: number) => {
+                  const rate = ((c.failures / (c.total || 1)) * 100).toFixed(0);
+                  return (
+                    <tr key={idx} className="hover:bg-zinc-900/40">
+                      <td className="py-2.5 px-3 font-bold text-zinc-200">{c.constraint_kind}</td>
+                      <td className="py-2.5 px-3 text-zinc-400">{c.total}</td>
+                      <td className="py-2.5 px-3 text-amber-400 font-bold">{c.failures}</td>
+                      <td className="py-2.5 px-3 text-right text-white font-bold">{rate}%</td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={4} className="py-6 text-center text-zinc-500">
+                    No checks recorded yet. Run verified transactions to populate SQL telemetry.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

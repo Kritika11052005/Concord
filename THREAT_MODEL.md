@@ -60,6 +60,9 @@ mindmap
 - [x] **Public Verifier Privacy**: Public endpoint payload verified against Zod schema to guarantee absence of raw intent text.
 - [x] **No Client Secrets**: CI build script greps `apps/web/.next` to ensure no `NEXT_PUBLIC_` secret leakage.
 
+> [!NOTE]
+> **Implementation Note on Semantic Layer**: Category and attribute matching currently uses a keyword-overlap and taxonomy heuristic rather than an active remote LLM call, ensuring deterministic zero-dependency execution; wiring a real model call for this layer is the immediate next step for scaled production deployment.
+
 ---
 
 <div align="center">

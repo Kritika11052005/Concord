@@ -94,6 +94,13 @@ describe('Decision Algebra decide()', () => {
     expect(res.rule_applied).toBe('soft_constraint_fail');
   });
 
+  it('Safety net: Step-up when zero checks ran', () => {
+    const res = decide([], 0.95, 0.75);
+    expect(res.decision).toBe('step_up');
+    expect(res.rule_applied).toBe('zero_checks_safety_net');
+    expect(res.reason).toBe('No constraints could be verified against this request.');
+  });
+
   it('Rule 7: Passes when all checks conform', () => {
     const checks: CheckResult[] = [baseCheck];
     const res = decide(checks, 0.95, 0.75);

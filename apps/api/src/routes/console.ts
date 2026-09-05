@@ -91,7 +91,7 @@ consoleRouter.get('/metrics', async (req: Request, res: Response): Promise<void>
       [merchantId]
     );
 
-    // 2.4 Strictness
+    // 2.4 Strictness & Chain Length
     const merchantRes = await pool.query(
       `SELECT strictness, chain_length FROM merchants WHERE id = $1`,
       [merchantId]
@@ -100,14 +100,30 @@ consoleRouter.get('/metrics', async (req: Request, res: Response): Promise<void>
     const strictness = Number(merchantRes.rows[0]?.strictness || 0.75);
     const chainLength = Number(merchantRes.rows[0]?.chain_length || 0);
 
+    // 2.5 Real p95 verify latency (ms) from stored receipts
+    const latencyRes = await pool.query(
+      `SELECT COALESCE(percentile_cont(0.95) WITHIN GROUP (ORDER BY (latency_ms->>'total')::numeric), 0)::int as p95
+         FROM receipts
+        WHERE merchant_id = $1`,
+      [merchantId]
+    );
+    const p95Latency = Number(latencyRes.rows[0]?.p95 || 0);
+
+    // 2.6 Real extraction cache hit rate
+    const cacheRes = await pool.query(
+      `SELECT COALESCE(SUM(GREATEST(hit_count - 1, 0))::float / NULLIF(SUM(hit_count), 0), 0)::float as cache_hit_rate
+         FROM extraction_cache`
+    );
+    const cacheHitRate = Number(cacheRes.rows[0]?.cache_hit_rate || 0);
+
     res.json({
       decision_mix: decisionMix,
       checks_breakdown: checksRes.rows,
       degradation_rate: degRes.rows[0]?.degradation_rate || 0,
       strictness,
       chain_length: chainLength,
-      cache_hit_rate: 0.82, // Aggregated demo metric
-      p95_latency_ms: 185,
+      cache_hit_rate: cacheHitRate,
+      p95_latency_ms: p95Latency,
     });
   } catch (err) {
     console.error('Console metrics fetch error:', err);

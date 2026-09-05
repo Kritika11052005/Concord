@@ -24,12 +24,17 @@ import {
   validateConstraintSet,
 } from '@concord/core';
 import { pool } from '../db/index.js';
+import {
+  concurrencyLimiter,
+  rateLimitMiddleware,
+  spendGuard,
+} from '../middleware/rateLimit.js';
 
 export const verifyRouter = Router();
 
 const DEFAULT_MERCHANT_ID = '00000000-0000-0000-0000-000000000001';
 
-verifyRouter.post('/', async (req: Request, res: Response): Promise<void> => {
+verifyRouter.post('/', concurrencyLimiter, rateLimitMiddleware, async (req: Request, res: Response): Promise<void> => {
   const startTime = Date.now();
   const requestId = `req_${crypto.randomBytes(8).toString('hex')}`;
 
@@ -110,7 +115,8 @@ verifyRouter.post('/', async (req: Request, res: Response): Promise<void> => {
   // 3. Extraction (with cache)
   const extractStart = Date.now();
   const intentHash = crypto.createHash('sha256').update(intent_text.trim()).digest('hex');
-  const llmProvider = createLLMProvider(process.env.LLM_PROVIDER, process.env.LLM_API_KEY);
+  const apiKey = process.env.LLM_API_KEY || process.env.GEMINI_API_KEY || '';
+  const llmProvider = createLLMProvider(process.env.LLM_PROVIDER, apiKey, { spendGuard });
 
   let constraintSet: any = null;
   let fromCache = false;
@@ -178,6 +184,9 @@ verifyRouter.post('/', async (req: Request, res: Response): Promise<void> => {
         expected: null,
       },
     ];
+  }
+  if (semanticChecks.some((c) => c.verdict === 'unavailable')) {
+    degraded = true;
   }
   const semDuration = Date.now() - semStart;
 

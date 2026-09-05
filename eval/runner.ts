@@ -27,6 +27,14 @@ interface EvalPair {
   rationale: string;
 }
 
+interface ClassCount {
+  total: number;
+  mismatched_total: number;
+  conforming_total: number;
+  caught: number;
+  false_blocked: number;
+}
+
 const dataset: EvalPair[] = JSON.parse(
   fs.readFileSync(path.join(__dirname, 'dataset.json'), 'utf8')
 );
@@ -71,14 +79,14 @@ function buildCartFromPair(pair: EvalPair): Cart {
 
 async function runEvaluation() {
   console.log('='.repeat(70));
-  console.log('  CONCORD EVALUATION HARNESS — 60-PAIR BENCHMARK');
+  console.log(`  CONCORD EVALUATION HARNESS — ${dataset.length}-PAIR BENCHMARK`);
   console.log('='.repeat(70));
 
   const provider = new MockLLMProvider();
   const results: any[] = [];
   const failures: any[] = [];
 
-  const classCounts: Record<string, { total: number; caught: number; false_blocked: number }> = {};
+  const classCounts: Record<string, ClassCount> = {};
 
   let totalMismatched = 0;
   let truePositives = 0;
@@ -98,7 +106,7 @@ async function runEvaluation() {
   for (const pair of dataset) {
     const className = pair.class;
     if (!classCounts[className]) {
-      classCounts[className] = { total: 0, caught: 0, false_blocked: 0 };
+      classCounts[className] = { total: 0, mismatched_total: 0, conforming_total: 0, caught: 0, false_blocked: 0 };
     }
     classCounts[className].total++;
 
@@ -127,6 +135,7 @@ async function runEvaluation() {
 
     if (isMismatched) {
       totalMismatched++;
+      classCounts[className].mismatched_total++;
       if (pair.split === 'held_out') heldOutMismatched++;
 
       if (intervened) {
@@ -158,6 +167,7 @@ async function runEvaluation() {
       }
     } else if (isConforming) {
       totalConforming++;
+      classCounts[className].conforming_total++;
       if (pair.split === 'held_out') heldOutConforming++;
 
       if (!intervened) {
@@ -213,8 +223,8 @@ async function runEvaluation() {
   const reasonAccuracy = truePositives > 0 ? reasonCorrectCount / truePositives : 1.0;
 
   console.log('\n--- HEADLINE METRICS ---');
-  console.log(`Held-Out Recall (n=6):      ${(heldOutRecall * 100).toFixed(1)}%`);
-  console.log(`Dev Split Recall (n=24):    ${(devRecall * 100).toFixed(1)}%`);
+  console.log(`Held-Out Recall (n=${heldOutMismatched}):      ${(heldOutRecall * 100).toFixed(1)}%`);
+  console.log(`Dev Split Recall (n=${devMismatched}):    ${(devRecall * 100).toFixed(1)}%`);
   console.log(`Overall Precision:          ${(overallPrecision * 100).toFixed(1)}%`);
   console.log(`Overall Recall:             ${(overallRecall * 100).toFixed(1)}%`);
   console.log(`False Positive Rate (FP):   ${(falsePositiveRate * 100).toFixed(1)}% (good sales blocked)`);
@@ -222,15 +232,21 @@ async function runEvaluation() {
   console.log(`Reason Accuracy:            ${(reasonAccuracy * 100).toFixed(1)}%`);
 
   console.log('\n--- PER-CLASS RECALL (MISMATCHED PAIRS) ---');
-  for (const cls of ['M1', 'M2', 'M3', 'M4', 'M5']) {
-    const c = classCounts[cls] || { total: 0, caught: 0 };
-    console.log(`  ${cls.padEnd(4)}: ${c.caught}/${c.total} caught (${((c.caught / (c.total || 1)) * 100).toFixed(0)}%)`);
+  for (const cls of ['M1', 'M2', 'M3', 'M4', 'M5', 'NP']) {
+    const c = classCounts[cls] || { total: 0, mismatched_total: 0, conforming_total: 0, caught: 0, false_blocked: 0 };
+    const total = c.mismatched_total ?? c.total ?? 0;
+    if (total > 0) {
+      console.log(`  ${cls.padEnd(4)}: ${c.caught}/${total} caught (${((c.caught / total) * 100).toFixed(0)}%)`);
+    }
   }
 
   console.log('\n--- PER-CLASS FALSE POSITIVES (CONFORMING PAIRS) ---');
-  for (const cls of ['C1', 'C2', 'C3', 'C4', 'C5']) {
-    const c = classCounts[cls] || { total: 0, false_blocked: 0 };
-    console.log(`  ${cls.padEnd(4)}: ${c.false_blocked}/${c.total} wrongly blocked`);
+  for (const cls of ['C1', 'C2', 'C3', 'C4', 'C5', 'NP']) {
+    const c = classCounts[cls] || { total: 0, mismatched_total: 0, conforming_total: 0, caught: 0, false_blocked: 0 };
+    const total = c.conforming_total ?? c.total ?? 0;
+    if (total > 0) {
+      console.log(`  ${cls.padEnd(4)}: ${c.false_blocked}/${total} wrongly blocked`);
+    }
   }
 
   // Strictness Sweep (0.50 to 0.95 in steps of 0.05)
